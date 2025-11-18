@@ -23,13 +23,22 @@ El objetivo es simular el funcionamiento básico de una tienda online, permitien
 ## **Características del proyecto**
 
 ✔️ Renderizado dinámico de los productos
+
+
 ✔️ Agregar productos al carrito
+
 ✔️ Modificar la cantidad de cada producto
+
 ✔️ Eliminar productos individualmente
+
 ✔️ Vaciar el carrito completo
+
 ✔️ Cálculo automático del total
+
 ✔️ Guardado automático del carrito con `localStorage`
+
 ✔️ Interfaz construida con Bootstrap 5
+
 ✔️ Lógica separada en un archivo independiente (`app.js`)
 
 ---
