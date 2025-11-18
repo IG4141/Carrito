@@ -22,24 +22,24 @@ El objetivo es simular el funcionamiento básico de una tienda online, permitien
 
 ## **Características del proyecto**
 
-✔️ Renderizado dinámico de los productos
+ Renderizado dinámico de los productos
 
 
-✔️ Agregar productos al carrito
+ Agregar productos al carrito
 
-✔️ Modificar la cantidad de cada producto
+Modificar la cantidad de cada producto
 
-✔️ Eliminar productos individualmente
+ Eliminar productos individualmente
 
-✔️ Vaciar el carrito completo
+ Vaciar el carrito completo
 
-✔️ Cálculo automático del total
+ Cálculo automático del total
 
-✔️ Guardado automático del carrito con `localStorage`
+ Guardado automático del carrito con `localStorage`
 
-✔️ Interfaz construida con Bootstrap 5
+Interfaz construida con Bootstrap 5
 
-✔️ Lógica separada en un archivo independiente (`app.js`)
+ Lógica separada en un archivo independiente (`app.js`)
 
 ---
 
@@ -75,17 +75,5 @@ El objetivo es simular el funcionamiento básico de una tienda online, permitien
 6. El carrito se guarda automáticamente gracias a `localStorage`.
 
 ---
-
-## **Objetivo de la entrega**
-
-Este proyecto cumple con los puntos solicitados en clase, incluyendo:
-
-* Manipulación del DOM
-* Manejo de eventos
-* Uso de arrays y objetos
-* Métodos de array (`find`, `filter`, `forEach`)
-* Persistencia con `localStorage`
-* Interacción dinámica entre HTML y JavaScript
-* Uso de Bootstrap para mejorar la presentación
 
 ---
