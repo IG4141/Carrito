@@ -15,9 +15,8 @@ El objetivo es simular el funcionamiento básico de una tienda online, permitien
 
 ## **Integrantes del equipo**
 
-* **
-* *
-* *
+*  Ivo Giuliano Cappetto
+* Joaquin Grosso
 ---
 
 ## **Características del proyecto**
