@@ -17,6 +17,7 @@ El objetivo es simular el funcionamiento básico de una tienda online, permitien
 
 *  Ivo Giuliano Cappetto
 * Joaquin Grosso
+* Oliva FRANCIOS Marcos
 ---
 
 ## **Características del proyecto**
