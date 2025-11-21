@@ -4,8 +4,13 @@ const productos =[
     {id: 2, nombre: "pantalon", precio:35},
     {id: 3, nombre: "zapatillas", precio:50}
 ];
-let carrito
-const carrito = document.querySelector('#carrito');
+let carrito= [];
+productos.forEach(prod =>{
+    const btn = document.createElement("botton");
+    btn.textContent='agregar ${prod.nombre} - $${prod.precio}';
+    btn.onclick = () => carritoHTML(prod);
+    contenedorCarrito.appendChild(btn);
+});
 const listaCursos = document.querySelector('#lista-cursos');
 const contenedorCarrito = document.querySelector('#lista-carrito tbody');
 const vaciarCarritoBtn = document.querySelector('#vaciar-carrito');
