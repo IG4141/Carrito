@@ -1,76 +1,77 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Compras</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Carrito</title>
-        <link rel="preload" href="css/normalize.css" as="style">
-        <link rel="stylesheet" href="css/normalize.css">
-        <link rel="preload" href="css/skeleton.css" as="style">
-        <link rel="stylesheet" href="css/skeleton.css">
-        <link rel="preload" href="css/styles.css" as="style">
-        <link rel="stylesheet" href="css/custom.css">
-    </head>
-
-    <body>
-        <header id="header" class="header">
-            <div class="container">
-                <div class="row">
-                    <div class="four columns">
-                        <h1>Lestradamus</h1>
-                        <p>Agrega y quita elementos del carrito</p>
-                    </div>
-                    <div class="two columns u-pull-right">
-                        <ul>
-                            <li class="submenu">
-                                <img src="img/cart.png" id="img-carrito" alt="carrito">
-                                <div id="carrito">
-                                    <table id="lista-carrito" class="u-full-width">
-                                        <thead>
-                                            <tr>
-                                                <th>Imagen</th>
-                                                <th>Nombre</th>
-                                                <th>Precio</th>
-                                                <th>Cantidad</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody></tbody>
-                                    </table>
-
-                                    <a href="#" id="vaciar-carrito" class="button u-full-width">Vaciar Carrito</a>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <div id="hero">
-            <div class="container">
-                <div class="row">
-                    <div class="six columns">
-                        <div class="contenido-hero">
-                            <h2>CARRITO DE IVO, MARCOS Y JOAQUIN</h2>
-                            
-
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header-left">
+            <h1>carrito de compras</h1>
         </div>
 
-        
+        <div class="header-center"></div>
 
-        
+        <div class="header-right">
+            <button id="menu-btn">Opciones</button>
 
-        
+            <!-- MENÚ DESPLEGABLE -->
+            <div class="menu" id="menu">
+                <button onclick="mostrarcarrito()">Mostrar carrito</button>
+                <button onclick="carrito = []; guardar(); mostrarcarrito()">Vaciar carrito</button>
+                <button onclick="alert('Total: $' + document.getElementById('total').textContent)">Ver total</button>
+                <button onclick="cerrarmenu()">Cerrar menú</button>
+            </div>
+        </div>
+    </header>
 
-        <script src="js/app.js"></script>
+    <!-- ZONA DE BOTONES DE PRODUCTOS -->
+    <section class="productos-zona">
+        <h2>Productos</h2>
+        <div id="productos-lista"></div>
+    </section>
 
-    </body>
+    <!-- ZONA CENTRAL CON 3 DIVS PARA IMÁGENES -->
+    <div class="imagenes">
+        <div class="img-box"></div>
+        <div class="img-box"></div>
+        <div class="img-box"></div>
+    </div>
 
+    <!-- CARRITO -->
+    <section class="carrito-contenedor">
+        <h2>Carrito</h2>
+        <ul id="carrito"></ul>
+        <p>Total: $<span id="total">0</span></p>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <h3>CARRITO DE compras de IVO, MARCOS Y JOAQUIN</h3>
+    </footer>
+
+    <script src="app.js"></script>
+    <script>
+        // controlar mostrar/ocultar menú
+        const menu = document.getElementById("menu");
+        const btn = document.getElementById("menu-btn");
+
+        btn.addEventListener("mouseover", () => {
+            menu.style.display = "block";
+        });
+
+        menu.addEventListener("mouseleave", () => {
+            menu.style.display = "none";
+        });
+
+        function cerrarmenu() {
+            menu.style.display = "none";
+        }
+    </script>
+
+</body>
 </html>
