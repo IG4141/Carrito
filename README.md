@@ -1,5 +1,3 @@
-
-
 # **Proyecto: Carrito de Compras en JavaScript**
 
 Este proyecto consiste en un **carrito de compras dinámico**, desarrollado utilizando:
@@ -15,19 +13,19 @@ El objetivo es simular el funcionamiento básico de una tienda online, permitien
 
 ## **Integrantes del equipo**
 
-*  Ivo Giuliano Cappetto
+* Ivo Giuliano Cappetto
 * Joaquin Grosso
 * Oliva FRANCIOS Marcos
+
 ---
 
 ## **Características del proyecto**
 
  Renderizado dinámico de los productos
 
-
  Agregar productos al carrito
 
-Modificar la cantidad de cada producto
+ Modificar la cantidad de cada producto
 
  Eliminar productos individualmente
 
@@ -37,7 +35,7 @@ Modificar la cantidad de cada producto
 
  Guardado automático del carrito con `localStorage`
 
-Interfaz construida con Bootstrap 5
+ Interfaz construida con Bootstrap 5
 
  Lógica separada en un archivo independiente (`app.js`)
 
@@ -54,18 +52,16 @@ Interfaz construida con Bootstrap 5
 
 ## **Estructura del proyecto**
 
-```
 /
 ├── index.html
 └── app.js
-```
 
 * `index.html`: Contiene la estructura del sitio y carga los recursos necesarios.
 * `app.js`: Implementa toda la lógica del carrito: agregar, eliminar, modificar, renderizar y guardar datos.
 
 ---
 
-##  **Instrucciones de uso**
+## **Instrucciones de uso**
 
 1. Abrir el archivo `index.html` en el navegador.
 2. Navegar por los productos de la tienda.
@@ -73,7 +69,5 @@ Interfaz construida con Bootstrap 5
 4. Modificar cantidades desde el carrito o eliminar productos.
 5. El total se actualiza automáticamente en todo momento.
 6. El carrito se guarda automáticamente gracias a `localStorage`.
-
----
 
 ---
