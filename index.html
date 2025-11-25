@@ -1,77 +1,116 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carrito de Compras</title>
-    <link rel="stylesheet" href="custom.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carrito de Compras</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body { background-color: #f8f9fa; }
+    .product-card { min-height: 200px; }
+  </style>
 </head>
-<body>
+<body class="p-4">
 
-    <!-- HEADER -->
-    <header class="header">
-        <div class="header-left">
-            <h1>carrito de compras</h1>
-        </div>
+  <div class="container">
+    <h1 class="mb-4 text-center">Carrito de Compras Virtual</h1>
 
-        <div class="header-center"></div>
-
-        <div class="header-right">
-            <button id="menu-btn">Opciones</button>
-
-            <!-- MENÚ DESPLEGABLE -->
-            <div class="menu" id="menu">
-                <button onclick="mostrarcarrito()">Mostrar carrito</button>
-                <button onclick="carrito = []; guardar(); mostrarcarrito()">Vaciar carrito</button>
-                <button onclick="alert('Total: $' + document.getElementById('total').textContent)">Ver total</button>
-                <button onclick="cerrarmenu()">Cerrar menú</button>
-            </div>
-        </div>
-    </header>
-
-    <!-- ZONA DE BOTONES DE PRODUCTOS -->
-    <section class="productos-zona">
-        <h2>Productos</h2>
-        <div id="productos-lista"></div>
-    </section>
-
-    <!-- ZONA CENTRAL CON 3 DIVS PARA IMÁGENES -->
-    <div class="imagenes">
-        <div class="img-box"></div>
-        <div class="img-box"></div>
-        <div class="img-box"></div>
+    <!-- Botones principales -->
+    <div class="d-flex gap-3 mb-4 justify-content-center">
+      <button id="vaciarCarrito" class="btn btn-danger">Vaciar Carrito</button>
+      <button id="agregarRandom" class="btn btn-primary">Agregar al Carrito</button>
     </div>
 
-    <!-- CARRITO -->
-    <section class="carrito-contenedor">
-        <h2>Carrito</h2>
-        <ul id="carrito"></ul>
-        <p>Total: $<span id="total">0</span></p>
-    </section>
+    <!-- Lista de productos disponibles -->
+    <h3>Productos disponibles</h3>
+    <div id="listaProductos" class="row g-3 mb-5"></div>
 
-    <!-- FOOTER -->
-    <footer>
-        <h3>CARRITO DE compras de IVO, MARCOS Y JOAQUIN</h3>
-    </footer>
+    <!-- Carrito -->
+    <h3>Carrito</h3>
+    <ul id="carrito" class="list-group mb-3"></ul>
 
-    <script src="app.js"></script>
-    <script>
-        // controlar mostrar/ocultar menú
-        const menu = document.getElementById("menu");
-        const btn = document.getElementById("menu-btn");
+    <h4>Total: $<span id="total">0</span></h4>
+  </div>
 
-        btn.addEventListener("mouseover", () => {
-            menu.style.display = "block";
-        });
+  <script>
+    const productos = [
+      { id: 1, nombre: "camiseta", precio: 20, cantidad: 1 },
+      { id: 2, nombre: "pantalon", precio: 35, cantidad: 1 },
+      { id: 3, nombre: "zapatillas", precio: 50, cantidad: 1 }
+    ];
 
-        menu.addEventListener("mouseleave", () => {
-            menu.style.display = "none";
-        });
+    let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
-        function cerrarmenu() {
-            menu.style.display = "none";
-        }
-    </script>
+    const listaProductos = document.getElementById("listaProductos");
+    const carritoUI = document.getElementById("carrito");
+    const totalUI = document.getElementById("total");
+
+    // Renderizar productos disponibles
+    function mostrarProductos() {
+      listaProductos.innerHTML = "";
+      productos.forEach(prod => {
+        listaProductos.innerHTML += `
+          <div class="col-md-4">
+            <div class="card product-card p-3 shadow-sm">
+              <h5 class="card-title text-capitalize">${prod.nombre}</h5>
+              <p>Precio: $${prod.precio}</p>
+              <button class="btn btn-success w-100" onclick="agregarProducto(${prod.id})">Agregar</button>
+            </div>
+          </div>`;
+      });
+    }
+
+    // Agregar producto al carrito
+    function agregarProducto(id) {
+      const prod = productos.find(p => p.id === id);
+      const item = carrito.find(p => p.id === id);
+
+      if (item) {
+        item.cantidad++;
+      } else {
+        carrito.push({ ...prod });
+      }
+
+      guardarYRender();
+    }
+
+    // Botón de agregar producto random
+    document.getElementById("agregarRandom").addEventListener("click", () => {
+      const random = productos[Math.floor(Math.random() * productos.length)];
+      agregarProducto(random.id);
+    });
+
+    // Vaciar carrito
+    document.getElementById("vaciarCarrito").addEventListener("click", () => {
+      carrito = [];
+      guardarYRender();
+    });
+
+    // Mostrar carrito
+    function mostrarCarrito() {
+      carritoUI.innerHTML = "";
+      let total = 0;
+
+      carrito.forEach(prod => {
+        total += prod.precio * prod.cantidad;
+        carritoUI.innerHTML += `
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span class="text-capitalize">${prod.nombre} (x${prod.cantidad})</span>
+            <span>$${prod.precio * prod.cantidad}</span>
+          </li>`;
+      });
+
+      totalUI.textContent = total;
+    }
+
+    function guardarYRender() {
+      localStorage.setItem("carrito", JSON.stringify(carrito));
+      mostrarCarrito();
+    }
+
+    mostrarProductos();
+    mostrarCarrito();
+  </script>
 
 </body>
 </html>

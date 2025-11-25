@@ -1,100 +1,93 @@
-// LISTA DE PRODUCTOS
+// Lista de productos disponibles
 const productos = [
-    { id: 1, nombre: "camiseta", precio: 20, cantidad: 1 },
-    { id: 2, nombre: "pantalon", precio: 35, cantidad: 1 },
-    { id: 3, nombre: "zapatillas", precio: 50, cantidad: 1 }
+    { nombre: "Manzana", precio: 200 },
+    { nombre: "Banana", precio: 150 },
+    { nombre: "Naranja", precio: 180 },
+    { nombre: "Leche", precio: 900 },
+    { nombre: "Pan", precio: 800 }
 ];
 
 let carrito = [];
 
-// CONTENEDOR DONDE IRÁN LOS BOTONES DE PRODUCTOS
-const contenedor = document.getElementById("productos-lista");
+// ------------------ MOSTRAR PRODUCTOS EN LA PÁGINA ------------------
+function mostrarProductos() {
+    const contenedor = document.getElementById("productos-lista");
+    contenedor.innerHTML = "";
 
-// Crear botones para agregar productos
-productos.forEach(prod => {
-    const btn = document.createElement("button");
-    btn.textContent = `Agregar ${prod.nombre} - $${prod.precio}`;
-    btn.onclick = () => agregaralcarrito(prod);
-    contenedor.appendChild(btn);
-});
-
-
-// AGREGAR AL CARRITO
-function agregaralcarrito(producto) {
-    const existe = carrito.find(p => p.id === producto.id);
-    if (existe) {
-        existe.cantidad++;
-    } else {
-        carrito.push({ ...producto }); 
-    }
-    guardar();
-    mostrarcarrito();
+    productos.forEach(p => {
+        const div = document.createElement("div");
+        div.classList.add("producto-card");
+        div.innerHTML = `
+            <h4>${p.nombre}</h4>
+            <p>$${p.precio}</p>
+        `;
+        contenedor.appendChild(div);
+    });
 }
 
-
-// MOSTRAR CARRITO
-function mostrarcarrito() {
-    const lista = document.getElementById("carrito");
+// ------------------ MOSTRAR OPCIONES EN LA VENTANA ------------------
+function mostrarOpciones() {
+    const lista = document.getElementById("lista-opciones");
     lista.innerHTML = "";
+
+    productos.forEach((p, index) => {
+        let opcion = document.createElement("div");
+        opcion.classList.add("producto-opcion");
+        opcion.textContent = `${p.nombre} - $${p.precio}`;
+
+        opcion.onclick = () => {
+            carrito.push({ ...p });
+            guardar();
+            mostrarCarrito();
+        };
+
+        lista.appendChild(opcion);
+    });
+}
+
+// ------------------ MOSTRAR CARRITO ------------------
+function mostrarCarrito() {
+    const cont = document.getElementById("carrito");
+    cont.innerHTML = "";
     let total = 0;
 
-    carrito.forEach(item => {
-        const li = document.createElement("li");
-        li.textContent = `${item.nombre} - $${item.precio} x${item.cantidad} `;
-
-        // Input cantidad
-        const inputcantidad = document.createElement("input");
-        inputcantidad.type = "number";
-        inputcantidad.value = item.cantidad;
-        inputcantidad.min = 1;
-        inputcantidad.onchange = (e) =>
-            modificarlacantidad(item.id, parseInt(e.target.value));
-
-        // Botón eliminar
-        const btneliminar = document.createElement("button");
-        btneliminar.textContent = "❌";
-        btneliminar.onclick = () => eliminarcarrito(item.id);
-
-        li.appendChild(inputcantidad);
-        li.appendChild(btneliminar);
-        lista.appendChild(li);
-
-        total += item.precio * item.cantidad;
+    carrito.forEach(p => {
+        cont.innerHTML += `
+            <div>${p.nombre} - $${p.precio}</div>
+        `;
+        total += p.precio;
     });
 
     document.getElementById("total").textContent = total;
 }
 
-
-// ELIMINAR PRODUCTO
-function eliminarcarrito(id) {
-    carrito = carrito.filter(p => p.id !== id);
-    guardar();
-    mostrarcarrito();
-}
-
-
-// MODIFICAR CANTIDAD
-function modificarlacantidad(id, nuevacantidad) {
-    const item = carrito.find(p => p.id === id);
-    if (!item) return;
-
-    if (nuevacantidad > 0) {
-        item.cantidad = nuevacantidad;
-    } else {
-        eliminarcarrito(id);
-    }
-    guardar();
-    mostrarcarrito();
-}
-
-
-// GUARDAR EN LOCALSTORAGE
+// ------------------ GUARDADO LOCAL ------------------
 function guardar() {
     localStorage.setItem("carrito", JSON.stringify(carrito));
 }
 
+// ------------------ CARGAR AL INICIAR ------------------
+window.onload = () => {
+    const guardado = localStorage.getItem("carrito");
+    if (guardado) carrito = JSON.parse(guardado);
 
-// CARGAR CARRITO GUARDADO
-carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-mostrarcarrito();
+    mostrarProductos();
+    mostrarOpciones();
+    mostrarCarrito();
+};
+
+// ------------------ VACÍAR CARRITO ------------------
+document.getElementById("vaciar").onclick = () => {
+    carrito = [];
+    guardar();
+    mostrarCarrito();
+};
+
+// ------------------ VENTANA FLOTANTE ------------------
+document.getElementById("abrir-menu").onclick = () => {
+    document.getElementById("ventana-productos").style.display = "block";
+};
+
+document.getElementById("cerrar-menu").onclick = () => {
+    document.getElementById("ventana-productos").style.display = "none";
+};
