@@ -5,45 +5,60 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Carrito de Compras</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <style>
-    body { background-color: #f8f9fa; }
-    .product-card { min-height: 200px; }
-  </style>
+  <link href="css/custom.css" rel="stylesheet" />
 </head>
 <body class="p-4">
 
-  <div class="container">
-    <h1 class="mb-4 text-center">Carrito de Compras Virtual</h1>
-
-    <!-- Botones principales -->
-    <div class="d-flex gap-3 mb-4 justify-content-center">
-      <button id="vaciarCarrito" class="btn btn-danger">Vaciar Carrito</button>
-      <button id="agregarRandom" class="btn btn-primary">Agregar al Carrito</button>
+  <!-- Icono del carrito -->
+  <button class="cart-btn" id="cartBtn">🛒
+    <span class="cart-badge" id="cartBadge">0</span>
+  </button>
+  
+  <!-- Pop up del carrito -->
+  <div class="cart-popup" id="cartPopup">
+    <div class="cart-popup-header">Tu Carrito</div>
+    <div id="cartPopupItems"></div>
+    <div class="cart-popup-total">Total: $<span id="popupTotal">0</span></div>
+    <div class="cart-popup-buttons">
+      <button class="btn-empty-cart" onclick="vaciarCarrito()">Vaciar</button>
+      <button class="btn-buy" onclick="comprar()">Comprar</button>
     </div>
+    <button class="cart-popup-close" onclick="toggleCartPopup()">Cerrar</button>
+  </div>
+
+  <div class="container">
+    <h1 class="mb-4 text-center main-title">Carrito de Compras Virtual</h1>
 
     <!-- Lista de productos disponibles -->
     <h3>Productos disponibles</h3>
     <div id="listaProductos" class="row g-3 mb-5"></div>
-
-    <!-- Carrito -->
-    <h3>Carrito</h3>
-    <ul id="carrito" class="list-group mb-3"></ul>
-
-    <h4>Total: $<span id="total">0</span></h4>
   </div>
 
   <script>
     const productos = [
-      { id: 1, nombre: "camiseta", precio: 20, cantidad: 1 },
-      { id: 2, nombre: "pantalon", precio: 35, cantidad: 1 },
-      { id: 3, nombre: "zapatillas", precio: 50, cantidad: 1 }
+      { id: 1, nombre: "Camiseta unicolor manga corta", precio: 20, cantidad: 1, imagen: "img/kmiseta.png" },
+      { id: 2, nombre: "Pantalones Jean Rotos", precio: 35, cantidad: 1, imagen: "img/jean r.png" },
+      { id: 3, nombre: "Zapatillas Salomon X Ultra 360", precio: 50, cantidad: 1, imagen: "img/zapas.png" },
+      { id: 4, nombre: "Chaqueta de cuero real", precio: 60, cantidad: 1, imagen: "img/chaqueta.png" },
+      { id: 5, nombre: "Gorro Beanie unicolor cuff", precio: 15, cantidad: 1, imagen: "img/gorro uni.png" },
+      { id: 6, nombre: "Medias pata de pollo", precio: 8, cantidad: 1, imagen: "img/medias pollo.png" }
     ];
 
     let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
     const listaProductos = document.getElementById("listaProductos");
-    const carritoUI = document.getElementById("carrito");
-    const totalUI = document.getElementById("total");
+    const cartPopupItems = document.getElementById("cartPopupItems");
+    const popupTotal = document.getElementById("popupTotal");
+    const cartBtn = document.getElementById("cartBtn");
+    const cartPopup = document.getElementById("cartPopup");
+    const cartBadge = document.getElementById("cartBadge");
+
+    // Abrir pop up del carrito
+    function toggleCartPopup() {
+      cartPopup.classList.toggle("active");
+    }
+
+    cartBtn.addEventListener("click", toggleCartPopup);
 
     // Renderizar productos disponibles
     function mostrarProductos() {
@@ -52,6 +67,7 @@
         listaProductos.innerHTML += `
           <div class="col-md-4">
             <div class="card product-card p-3 shadow-sm">
+              <div class="product-image"><img src="${prod.imagen}" alt="${prod.nombre}"></div>
               <h5 class="card-title text-capitalize">${prod.nombre}</h5>
               <p>Precio: $${prod.precio}</p>
               <button class="btn btn-success w-100" onclick="agregarProducto(${prod.id})">Agregar</button>
@@ -74,38 +90,50 @@
       guardarYRender();
     }
 
-    // Botón de agregar producto random
-    document.getElementById("agregarRandom").addEventListener("click", () => {
-      const random = productos[Math.floor(Math.random() * productos.length)];
-      agregarProducto(random.id);
-    });
-
-    // Vaciar carrito
-    document.getElementById("vaciarCarrito").addEventListener("click", () => {
-      carrito = [];
-      guardarYRender();
-    });
-
-    // Mostrar carrito
+    // Mostrar carrito en popup
     function mostrarCarrito() {
-      carritoUI.innerHTML = "";
+      cartPopupItems.innerHTML = "";
       let total = 0;
+      let itemCount = 0;
 
-      carrito.forEach(prod => {
-        total += prod.precio * prod.cantidad;
-        carritoUI.innerHTML += `
-          <li class="list-group-item d-flex justify-content-between align-items-center">
-            <span class="text-capitalize">${prod.nombre} (x${prod.cantidad})</span>
-            <span>$${prod.precio * prod.cantidad}</span>
-          </li>`;
-      });
+      if (carrito.length === 0) {
+        cartPopupItems.innerHTML = '<p style="text-align: center; color: #999; padding: 20px 0;">Tu carrito está vacío</p>';
+        cartBadge.classList.remove("active");
+      } else {
+        carrito.forEach(prod => {
+          total += prod.precio * prod.cantidad;
+          itemCount += prod.cantidad;
+          cartPopupItems.innerHTML += `
+            <div class="cart-popup-item">
+              <span>${prod.nombre}</span>
+              <span style="font-weight: bold;">x${prod.cantidad}</span>
+            </div>`;
+        });
+        cartBadge.textContent = itemCount;
+        cartBadge.classList.add("active");
+      }
 
-      totalUI.textContent = total;
+      popupTotal.textContent = total;
     }
 
     function guardarYRender() {
       localStorage.setItem("carrito", JSON.stringify(carrito));
       mostrarCarrito();
+    }
+
+    // Vaciar carrito
+    function vaciarCarrito() {
+      carrito = [];
+      guardarYRender();
+    }
+
+    // Función para comprar
+    function comprar() {
+      if (carrito.length === 0) {
+        alert("Tu carrito esta vacio, vas a comprar aire?");
+        return;
+      }
+      window.open("comprakappa.html", "_blank");
     }
 
     mostrarProductos();
